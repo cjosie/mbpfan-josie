@@ -20,7 +20,9 @@ Be (alot) verbose
 .SH FILES
 .I /etc/mbpfan.conf
 .RS
-The system wide configuration file.
+The system wide configuration file. Per-fan speed limits can be
+overridden with min_fanN_speed / max_fanN_speed; setting min_fanN_speed
+to 0 stops the fan while the temperature is at or below low_temp.
 .RE
 .SH AUTHOR
 Daniel Graziotin  <daniel@ineed.coffee>
