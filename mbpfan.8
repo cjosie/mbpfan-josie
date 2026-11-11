@@ -1,0 +1,32 @@
+.\" Process this file with
+.\" groff -man -Tascii mbpfan.1
+.\"
+.TH MBPFAN 8 "User Manuals"
+.SH NAME
+mbpfan \-  A simple daemon to control fan speed on Apple computers (Gentoo fork of mbpfan)
+.SH SYNOPSIS
+.B mbpfan [OPTIONS]
+.SH DESCRIPTION
+.B mbpfan 
+is a daemon that uses input from coretemp module and sets the fan speed using the applesmc module. 
+This fork targets Gentoo Linux on older Intel Macs. It assumes any number of processors and fans (max. 10).
+.SH OPTIONS
+.IP -h
+Show the help screen
+.IP -f
+Run in the foreground
+.IP -v
+Be (alot) verbose
+.SH FILES
+.I /etc/mbpfan.conf
+.RS
+The system wide configuration file.
+.RE
+.SH AUTHOR
+Daniel Graziotin  <daniel@ineed.coffee>
+.SH MORE INFO
+https://github.com/cjosie/mbpfan-josie/
+
+https://github.com/linux-on-mac/mbpfan/
+
+http://allanmcrae.com/2010/05/simple-macbook-pro-fan-daemon/
