@@ -380,7 +380,12 @@ t_fans *retrieve_fans()
             read_value_str(path_label, fan->label, max_label_len);
             trim_trailing_whitespace(fan->label);
 
-            fan->old_speed = 0;
+            /* Seed with the fan's real current target; a hardcoded 0 made
+             * the initial minimum-speed write vanish when the min speed is
+             * 0 (set_fan_speed skips same-value writes). */
+            fan->old_speed = read_value(path_output);
+            if (fan->old_speed < 0)
+                fan->old_speed = 0;
 
             if (fans_head == NULL) {
                 fans_head = fan;
@@ -549,11 +554,13 @@ void retrieve_settings(const char *settings_path, t_fans *fans)
             while (fan != NULL) {
 
                 char *config_key;
+                char min_speed_value[256 + 1];
                 config_key = smprintf("min_fan%d_speed", fan->fan_id);
-                /* Read configfile values */
-                result = settings_get_int(settings, "general", config_key);
-                if (result != 0) {
-                    fan->fan_min_speed = result;
+                /* 0 is a valid min speed (stop the fan); settings_get_int
+                 * returns 0 for both "key missing" and "value is 0", so
+                 * test for key presence with settings_get instead. */
+                if (settings_get(settings, "general", config_key, min_speed_value, sizeof(min_speed_value))) {
+                    fan->fan_min_speed = atoi(min_speed_value);
                 }
                 free(config_key);
 
