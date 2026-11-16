@@ -125,7 +125,13 @@ static bool is_modern_sensors_path()
         exit(EXIT_FAILURE);
     }
 
-    if (atoi(str_kernel_version) < 3) {
+    char *endptr = NULL;
+    long major = strtol(str_kernel_version, &endptr, 10);
+    if (endptr == str_kernel_version) {
+        mbp_log(LOG_ERR, "Could not parse major kernel version from %s. Exiting.", kernel.release);
+        exit(EXIT_FAILURE);
+    }
+    if (major < 3) {
         mbp_log(LOG_ERR, "mbpfan detected a pre-3.x.x linux kernel. Detected version: %s. Exiting.", kernel.release); 
         exit(EXIT_FAILURE);
     }
@@ -224,7 +230,10 @@ t_sensors *retrieve_sensors()
                         free(s);
                         exit(EXIT_FAILURE);
                     }
-                    fscanf(file, "%u", &s->temperature);
+                    s->temperature = max_temp;
+                    if (fscanf(file, "%u", &s->temperature) != 1) {
+                        mbp_log(LOG_WARNING, "Could not parse initial sensor value at %s", path);
+                    }
 
                     if (sensors_head == NULL) {
                         sensors_head = s;
