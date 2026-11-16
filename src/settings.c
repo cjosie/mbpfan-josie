@@ -605,6 +605,7 @@ static int get_key_value_from_str(const char *str, char *out_buf1, unsigned int 
 
     count1 = 0;
     count2 = 0;
+	char *out_buf1_begin = out_buf1;
 
     /* Read the key value from the input string and write it sequentially
      * to the first output buffer by walking the input string until we either hit
@@ -631,7 +632,7 @@ static int get_key_value_from_str(const char *str, char *out_buf1, unsigned int 
     *out_buf1 = '\0';
 
     /* Now trace the first input buffer backwards until we hit a non-blank character */
-    while (is_blank_char(*(out_buf1 - 1))) {
+    while (out_buf1 > out_buf1_begin && is_blank_char(*(out_buf1 - 1))) {
         out_buf1--;
     }
 

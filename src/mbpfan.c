@@ -230,6 +230,7 @@ t_sensors *retrieve_sensors()
                         free(s);
                         exit(EXIT_FAILURE);
                     }
+                    /* fail-safe, a garbage value leaves fans at full until the first poll */
                     s->temperature = max_temp;
                     if (fscanf(file, "%u", &s->temperature) != 1) {
                         mbp_log(LOG_WARNING, "Could not parse initial sensor value at %s", path);
