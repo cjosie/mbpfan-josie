@@ -2,6 +2,10 @@ AUTHORS, CONTRIBUTORS, MAINTAINERS
 ----------------------------------
 cjosie                  <josie AT josie-c DOT com> [MAINTAINER OF THIS FORK]
 
+PATCH CONTRIBUTORS
+------------------
+Charles Menser - Kernel 7.3 path fix
+
 UPSTREAM URL
 ------------
 mbpfan                  <https://github.com/linux-on-mac/mbpfan>
