@@ -100,6 +100,10 @@ char *smprintf(const char *fmt, ...)
 
     // create and write to buffer
     buf = malloc(cnt + 1);
+    if (buf == NULL) {
+        mbp_log(LOG_CRIT, "mbpfan failed to allocate %d bytes for formatted string. Exiting.", cnt + 1);
+        exit(EXIT_FAILURE);
+    }
     va_start(ap, fmt);
     vsnprintf(buf, cnt + 1, fmt, ap);
     va_end(ap);
@@ -109,13 +113,20 @@ char *smprintf(const char *fmt, ...)
 bool is_modern_sensors_path()
 {
     struct utsname kernel;
-    uname(&kernel);
-
+    if (uname(&kernel) == -1) {
+        mbp_log(LOG_ERR, "Unable to determine kernel version. Exiting.");
+        exit(EXIT_FAILURE);
+    }
+    
     char *str_kernel_version;
     str_kernel_version = strtok(kernel.release, ".");
+    if (str_kernel_version == NULL) {
+        mbp_log(LOG_ERR, "Unable to parse kernel version %s. Exiting.", kernel.release);
+        exit(EXIT_FAILURE);
+    }
 
     if (atoi(str_kernel_version) < 3) {
-        mbp_log(LOG_ERR, "mbpfan detected a pre-3.x.x linux kernel. Detected version: %s. Exiting.\n", kernel.release);
+        mbp_log(LOG_ERR, "mbpfan detected a pre-3.x.x linux kernel. Detected version: %s. Exiting.", kernel.release); 
         exit(EXIT_FAILURE);
     }
 
@@ -153,6 +164,10 @@ t_sensors *retrieve_sensors()
         }
 
         path_begin = strdup("/sys/devices/platform/coretemp.0/temp");
+        if (path_begin == NULL) {
+            mbp_log(LOG_CRIT, "Failed to allocate sensor path buffer. Exiting.");
+            exit(EXIT_FAILURE);
+        }
 
     } else {
 
@@ -199,7 +214,16 @@ t_sensors *retrieve_sensors()
 
                 if (file != NULL) {
                     s = (t_sensors *)malloc(sizeof(t_sensors));
+                    if (s == NULL) {
+                        mbp_log(LOG_CRIT, "Failed to allocate sensor structure. Exiting.");
+                        exit(EXIT_FAILURE);
+                    }
                     s->path = strdup(path);
+                    if (s->path == NULL) {
+                        mbp_log(LOG_CRIT, "Failed to duplicate sensor path. Exiting.");
+                        free(s);
+                        exit(EXIT_FAILURE);
+                    }
                     fscanf(file, "%u", &s->temperature);
 
                     if (sensors_head == NULL) {
@@ -357,8 +381,19 @@ t_fans *retrieve_fans()
 
         if (file != NULL) {
             fan = (t_fans *)malloc(sizeof(t_fans));
+            if (fan == NULL) {
+                mbp_log(LOG_CRIT, "Failed to allocate fan structure. Exiting.");
+                exit(EXIT_FAILURE);
+            }
             fan->fan_output_path = strdup(path_output);
             fan->fan_manual_path = strdup(path_manual);
+            if (fan->fan_output_path == NULL || fan->fan_manual_path == NULL) {
+                mbp_log(LOG_CRIT, "Failed to duplicate fan paths. Exiting.");
+                free(fan->fan_output_path);
+                free(fan->fan_manual_path);
+                free(fan);
+                exit(EXIT_FAILURE);
+            }
             fan->fan_manual_on = manual_on;
             fan->fan_manual_off = manual_off;
             fan->fan_id = counter;
@@ -377,6 +412,13 @@ t_fans *retrieve_fans()
 
             size_t max_label_len = 64;
             fan->label = malloc(max_label_len);
+            if (fan->label == NULL) {
+                mbp_log(LOG_CRIT, "Failed to allocate fan label buffer. Exiting.");
+                free(fan->fan_output_path);
+                free(fan->fan_manual_path);
+                free(fan);
+                exit(EXIT_FAILURE);
+            }
             read_value_str(path_label, fan->label, max_label_len);
             trim_trailing_whitespace(fan->label);
 

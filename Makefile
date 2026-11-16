@@ -9,7 +9,7 @@ TESTS_BIN = bin/mbpfan-tests
 BIN = bin/mbpfan
 CONF = mbpfan.conf
 DEPEND_MODULE = mbpfan.depend.conf
-INIT = mbpfan.init.gentoo
+INIT = mbpfan.init.openrc
 DOC = README.md
 MAN = mbpfan.8
 
