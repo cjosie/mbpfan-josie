@@ -1,6 +1,14 @@
 AUTHORS, CONTRIBUTORS, MAINTAINERS
 ----------------------------------
+cjosie                  <josie AT josie-c DOT com> [MAINTAINER OF THIS FORK]
 
+UPSTREAM URL
+------------
+mbpfan                  <https://github.com/linux-on-mac/mbpfan>
+
+
+UPSTREAM AUTHORS, CONTRIBUTORS, MAINTAINERS
+----------------------------------
 Daniel Graziotin        <daniel AT ineed DOT coffee>
 
 Marji Cermak            <marji AT morpht DOT com>
@@ -19,5 +27,5 @@ Ati Sharma              <ati.sharma AT gmail DOT com>
 
 ORIGINARY AUTHORS
 -----------------
-Allan McRae mbpfan      <http://allanmcrae.com/2010/05/simple-macbook-pro-fan-daemon>
-rvega                   <https://github.com/rvega/Fan-Control-Daemon>
+Allan McRae      <http://allanmcrae.com/2010/05/simple-macbook-pro-fan-daemon>
+rvega            <https://github.com/rvega/Fan-Control-Daemon>
