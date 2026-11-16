@@ -153,6 +153,7 @@ static const char *test_config_file()
 static const char *test_settings()
 {
     t_fans* fan = (t_fans *) malloc( sizeof( t_fans ) );
+    if (fan == NULL) return "test_settings: fan malloc failed";
     fan->fan_id = 1;
     fan->fan_max_speed = -1; 
     fan->next = NULL;
@@ -168,6 +169,7 @@ static const char *test_settings()
     mu_assert("polling_interval is not 7", polling_interval == 7);
     
     t_fans* fan2 = (t_fans *)malloc(sizeof(t_fans));
+    if (fan2 == NULL) return "test_settings: fan2 malloc failed";
     fan2->fan_id = 2;
     fan2->fan_max_speed = -1;
     fan2->next = NULL;
@@ -189,6 +191,7 @@ int received = 0;
 static void handler(int signal)
 {
     t_fans* fan = (t_fans *) malloc( sizeof( t_fans ) );
+    if (fan == NULL) return;
     fan->fan_id = 1;
     fan->next = NULL;
 
@@ -218,6 +221,7 @@ static const char *test_sighup_receive()
 static const char *test_settings_reload()
 {
     t_fans* fan = (t_fans *) malloc( sizeof( t_fans ) );
+    if (fan == NULL) return "test_settings_reload: fan malloc failed";
     fan->fan_id = 1;
     fan->fan_min_speed = -1;
     fan->fan_manual_path = NULL;

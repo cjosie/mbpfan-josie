@@ -27,7 +27,7 @@ OBJS := $(patsubst %.$(C),%.$(OBJ),$(wildcard $(SOURCE_PATH)*.$(C)))
 TESTS_OBJS := $(patsubst %.$(C),%.$(OBJ),$(wildcard $(TESTS_PATH)*.$(C)))
 TESTS_OBJS += $(filter-out %main.$(OBJ),$(OBJS))
 
-.PHONY: all clean tests uninstall install rebuild
+.PHONY: all clean tests uninstall install rebuild cppcheck clang-tidy
 
 %.$(OBJ):%.$(C)
 	mkdir -p bin
@@ -53,6 +53,9 @@ tests: all
 
 clang-tidy:
 	clang-tidy src/*.[ch]
+
+cppcheck:
+	cppcheck --std=c99 --enable=warning,performance,portability --inline-suppr --quiet src/ tests/
 
 uninstall:
 	rm /usr/sbin/mbpfan
