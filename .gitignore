@@ -24,3 +24,6 @@ bin/*
 # Local LLM/agent project memory
 .LLM_Memory/
 
+# Scratch notes
+scratch/
+
