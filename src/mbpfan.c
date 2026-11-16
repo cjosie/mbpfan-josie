@@ -80,8 +80,8 @@ int polling_interval = 1;
 
 t_sensors *sensors = NULL;
 t_fans *fans = NULL;
-char applesmc_path[PATH_MAX];
-char applesmc_fan_path[PATH_MAX];
+static char applesmc_path[PATH_MAX];
+static char applesmc_fan_path[PATH_MAX];
 
 
 char *smprintf(const char *fmt, ...)
@@ -110,7 +110,7 @@ char *smprintf(const char *fmt, ...)
     return buf;
 }
 
-bool is_modern_sensors_path()
+static bool is_modern_sensors_path()
 {
     struct utsname kernel;
     if (uname(&kernel) == -1) {
@@ -706,7 +706,7 @@ void check_requirements(const char *program_path)
     }
 }
 
-int get_max_mhz(void)
+static int get_max_mhz(void)
 {
     int max_mhz = -1;
     DIR *dir = opendir("/sys/devices/system/cpu");

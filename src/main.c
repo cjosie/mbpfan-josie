@@ -27,7 +27,7 @@
 #include "daemon.h"
 #include "global.h"
 
-void print_usage(int argc, char *argv[])
+static void print_usage(int argc, char *argv[])
 {
     if (argc >= 1) {
         printf("Usage: %s OPTION(S) \n", argv[0]);
